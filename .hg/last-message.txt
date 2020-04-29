@@ -1,1 +1,1 @@
-moved to new directory and copied in new repo also added states and events and transition table
+implemented first states of automaton
