@@ -1,1 +1,1 @@
-automaton works now, bank account does not have specific value of money yet
+bank accounts now all have speciic amounts of money

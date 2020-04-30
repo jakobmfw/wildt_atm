@@ -25,9 +25,15 @@ int main(){
   int aktion{};
   int geldmenge{};
 
+  float kontostand1{69420};
+  float kontostand2{187};
+  float kontostand3{99.90};
+
+  bool run{true};
+
   sm<Automaton> sm;
 
-  while(true){
+  while(run){
     cout << "Karte bitte!" << endl;
     cin >> karte;
 
@@ -59,24 +65,87 @@ int main(){
             cout << "Wie viel wollen Sie abheben?" << endl;
             cin >> geldmenge;
 
-            sm.process_event(x_euro{geldmenge});
-            cout << "Karte wird ausgegeben!" << endl;
+            if(karte == "karte1"){
+              if(kontostand1 - geldmenge < 0){
+                cout << "Nicht genügend Geld am Konto!" << endl;
+                continue;
+              }
+              else{
 
-            sm.process_event(x_euro{geldmenge});
-            cout << "Ausgabe: " << geldmenge << endl;
+                kontostand1 -= geldmenge;
 
-            sm.process_event(abbruch{true});
-            continue;
+                sm.process_event(x_euro{geldmenge});
+                cout << "Karte wird ausgegeben!" << endl;
+
+                sm.process_event(x_euro{geldmenge});
+                cout << "Ausgabe: " << geldmenge << endl;
+
+                sm.process_event(abbruch{true});
+                continue;
+              }
+            }
+            else if(karte == "karte2"){
+              if(kontostand2 - geldmenge < 0){
+                cout << "Nicht genügend Geld am Konto!" << endl;
+                continue;
+              }
+              else{
+
+                kontostand2 -= geldmenge;
+
+                sm.process_event(x_euro{geldmenge});
+                cout << "Karte wird ausgegeben!" << endl;
+
+                sm.process_event(x_euro{geldmenge});
+                cout << "Ausgabe: " << geldmenge << endl;
+
+                sm.process_event(abbruch{true});
+                continue;
+              }
+            }
+            else if(karte == "karte3"){
+              if(kontostand3 - geldmenge < 0){
+                cout << "Nicht genügend Geld am Konto!" << endl;
+                continue;
+              }
+              else{
+
+                kontostand3 -= geldmenge;
+
+                sm.process_event(x_euro{geldmenge});
+                cout << "Karte wird ausgegeben!" << endl;
+
+                sm.process_event(x_euro{geldmenge});
+                cout << "Ausgabe: " << geldmenge << endl;
+
+                sm.process_event(abbruch{true});
+                continue;
+              }
+            }
 
           }
           else if(aktion == 2){
+
             sm.process_event(kontostand_e{true});
-            cout << "Kontostand: 69 Euronen!" << endl;
+
+            if(karte == "karte1"){
+              cout << kontostand1 << "€" << endl;
+            }
+            else if(karte == "karte2"){
+              cout << kontostand2 << "€" << endl;
+            }
+            else if(karte == "karte3"){
+              cout << kontostand3 << "€" << endl;
+            }
 
             sm.process_event(abbruch{true});
             continue;
           }
 
+        }
+        else{
+          sm.process_event(falscher_pin{});
+          run = false;
         }
 
       }
