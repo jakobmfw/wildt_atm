@@ -1,1 +1,1 @@
-implemented first states of automaton
+automaton works now, bank account does not have specific value of money yet

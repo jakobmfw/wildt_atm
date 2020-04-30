@@ -1,0 +1,8 @@
+[
+  {
+    "directory": "/Users/jakob/Desktop/schule/5bHIF/POS/durchkommen/wildt2/code/build",
+    "command": "c++ -Ibankomat@exe -I. -I.. -I../include -Xclang -fcolor-diagnostics -pipe -Wall -Winvalid-pch -Wnon-virtual-dtor -Wextra -Wpedantic -Werror -std=c++17 -g -MD -MQ 'bankomat@exe/src_main.cpp.o' -MF 'bankomat@exe/src_main.cpp.o.d' -o 'bankomat@exe/src_main.cpp.o' -c ../src/main.cpp",
+    "file": "../src/main.cpp",
+    "output": "bankomat@exe/src_main.cpp.o"
+  }
+]

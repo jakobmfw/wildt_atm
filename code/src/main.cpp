@@ -2,7 +2,7 @@
 // Project: Bankomat Boost
 // File   : main.cpp
 
-#include "boost/sml.hpp"
+#include "boost/include/sml.hpp"
 #include <iostream>
 #include "automaton.h"
 #include <map>
@@ -10,7 +10,9 @@
 
 namespace sml = boost::sml;
 
-int main(int argc, char* argv[]){
+int main(){
+
+  using namespace sml;
 
   std::map<string, int> cards = {
     { "karte1", 1234 },
@@ -19,9 +21,11 @@ int main(int argc, char* argv[]){
 };
 
   string karte{};
-  int pin{};
+  int pin_{};
   int aktion{};
-  Automaton sm = new Automaton();
+  int geldmenge{};
+
+  sm<Automaton> sm;
 
   while(true){
     cout << "Karte bitte!" << endl;
@@ -29,29 +33,48 @@ int main(int argc, char* argv[]){
 
     if(cards.find(karte) == cards.end()){
       cout << "Falsche Karte!" << endl;
+
+      sm.process_event(abbruch{true});
       continue;
     }
     else{
 
-      sm.process_event(karte_eingef{});
+      sm.process_event(karte_eingef{karte});
 
 
       cout << "PIN eingeben!" << endl;
-      cin >> pin;
+      cin >> pin_;
 
       try{
-        if(cards.at(karte) == pin){
+        if(cards.at(karte) == pin_){
 
-          sm.process_event(pin{});
+          sm.process_event(pin{pin_});
 
           cout << "Aktion auswählen! 1. Geld abheben oder 2. Kontostand anzeigen" << endl;
           cin >> aktion;
 
           if (aktion == 1){
-            sm.process_event(geld_abheben);xw
+            sm.process_event(geld_abheben_e{true});
+
+            cout << "Wie viel wollen Sie abheben?" << endl;
+            cin >> geldmenge;
+
+            sm.process_event(x_euro{geldmenge});
+            cout << "Karte wird ausgegeben!" << endl;
+
+            sm.process_event(x_euro{geldmenge});
+            cout << "Ausgabe: " << geldmenge << endl;
+
+            sm.process_event(abbruch{true});
+            continue;
+
           }
           else if(aktion == 2){
-            sm.process_event(kontostand);
+            sm.process_event(kontostand_e{true});
+            cout << "Kontostand: 69 Euronen!" << endl;
+
+            sm.process_event(abbruch{true});
+            continue;
           }
 
         }
