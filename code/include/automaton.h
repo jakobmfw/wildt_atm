@@ -83,7 +83,7 @@ public:
     using namespace sml;
     return make_transition_table(
      *"automat_bereit"_s + event<karte_eingef> / [] {std::cout << std::endl << "Neuer State: erwarte PIN" << std::endl << std::endl;} = "erwarte_pin"_s,
-      "automat_bereit"_s + on_exit<_> / [] {
+      "automat_bereit"_s + on_entry<_> / [] {
           std::cout << "Karte bitte!" << std::endl;
           std::cin >> karte;
 
