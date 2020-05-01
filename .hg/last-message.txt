@@ -1,1 +1,1 @@
-bank accounts now all have speciic amounts of money
+automaton nearly works, boost was used properly now
