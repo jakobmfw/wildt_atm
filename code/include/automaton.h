@@ -25,24 +25,6 @@ int geldmenge;
 float kontostand1{69420};
 float kontostand2{187};
 float kontostand3{99.90};
-//states
-/*
-struct automat_bereit{};
-
-struct erwarte_pin{};
-
-struct falscher_pin1{};
-
-struct falscher_pin2{};
-
-struct aktion_auswahlen{};
-
-struct geld_abheben{};
-
-struct karte_ausgegeben{};
-
-struct kontostand{};
-*/
 
 //events
 struct karte_eingef{
@@ -83,6 +65,14 @@ const auto right_PIN = [](PIN& pin, Karte& karte){
     return pin.value == karte.pin;
 };
 
+/*const auto abbruch_pin = [](PIN& pin){
+    if(pin.value == 'X'){
+        return true;
+    }
+    else{return false;}
+    
+};*/
+
 PIN pin_inp{};
 Karte karte_pin{};
 
@@ -92,7 +82,7 @@ public:
   auto operator()() {
     using namespace sml;
     return make_transition_table(
-     *"automat_bereit"_s + event<karte_eingef> / [] {std::cout << "Neuer State: erwarte PIN" << std::endl << std::endl;} = "erwarte_pin"_s,
+     *"automat_bereit"_s + event<karte_eingef> / [] {std::cout << std::endl << "Neuer State: erwarte PIN" << std::endl << std::endl;} = "erwarte_pin"_s,
       "automat_bereit"_s + on_exit<_> / [] {
           std::cout << "Karte bitte!" << std::endl;
           std::cin >> karte;
@@ -112,42 +102,54 @@ public:
           }
         
       },
-      "erwarte_pin"_s + event<pin> [right_PIN] / [] {std::cout << "Neuer State: Aktion auswählen" << std::endl << std::endl;} = "aktion_auswahlen"_s,
-      "erwarte_pin"_s + event<abbruch> / [] {std::cout << "Neuer State: Automat bereit" << std::endl << std::endl;} = "automat_bereit"_s,
-      "erwarte_pin"_s + event<pin> [!right_PIN] / [] {std::cout << "Neuer State: Falscher PIN 1" << std::endl << std::endl;} = "falscher_pin1"_s,
+      "erwarte_pin"_s + event<pin> [right_PIN] / [] {std::cout << std::endl << "Neuer State: Aktion auswählen" << std::endl << std::endl;} = "aktion_auswahlen"_s,
+      "erwarte_pin"_s + event<abbruch> / [] {std::cout << std::endl << "Neuer State: Automat bereit" << std::endl << std::endl;} = "automat_bereit"_s,
+      "erwarte_pin"_s + event<pin> [!right_PIN] / [] {std::cout << std::endl << "Neuer State: Falscher PIN 1" << std::endl << std::endl;} = "falscher_pin1"_s,
       "erwarte_pin"_s + on_entry<_> / [] {
-          std::cout << "PIN eingeben!" << std::endl;
+          std::cout << "PIN eingeben!" << std::endl; 
           std::cin >> pin_;
           pin_inp.value = pin_;
         
       },
-      "falscher_pin1"_s + event<pin> [!right_PIN] / [] {std::cout << "Neuer State: Falscher PIN 2" << std::endl << std::endl;} = "falscher_pin2"_s,
-      "falscher_pin1"_s + event<pin> [right_PIN] / [] {std::cout << "Neuer State: Aktion auswählen" << std::endl << std::endl;} = "aktion_auswahlen"_s,
+      "falscher_pin1"_s + event<pin> [!right_PIN] / [] {std::cout << std::endl << "Neuer State: Falscher PIN 2" << std::endl << std::endl;} = "falscher_pin2"_s,
+      "falscher_pin1"_s + event<pin> [right_PIN] / [] {std::cout << std::endl << "Neuer State: Aktion auswählen" << std::endl << std::endl;} = "aktion_auswahlen"_s,
       "falscher_pin1"_s + on_entry<_> / [] {
           std::cout << "Fehler 1! PIN erneut eingeben!" << std::endl;
           std::cin >> pin_;
           pin_inp.value = pin_;
       },
-      "falscher_pin2"_s + event<pin> [!right_PIN] / [] {std::cout << "Neuer State: Automat bereit" << std::endl << std::endl;} = "automat_bereit"_s,
-      "falscher_pin2"_s + event<pin> [right_PIN] / [] {std::cout << "Neuer State: Aktion auswählen" << std::endl << std::endl;} = "aktion_auswahlen"_s,
+      "falscher_pin2"_s + event<pin> [!right_PIN] / [] {
+          std::cout << std::endl << "Karte eingezogen!" << std::endl;
+          cards.erase(karte);
+          std::cout << std::endl << "Neuer State: Automat bereit" << std::endl << std::endl;
+          } = "automat_bereit"_s,
+      "falscher_pin2"_s + event<pin> [right_PIN] / [] {std::cout << std::endl << "Neuer State: Aktion auswählen" << std::endl << std::endl;} = "aktion_auswahlen"_s,
       "falscher_pin2"_s + on_entry<_> / [] {
           std::cout << "Fehler 2! PIN erneut eingeben!" << std::endl;
           std::cin >> pin_;
           pin_inp.value = pin_;
       },
-      "aktion_auswahlen"_s + event<geld_abheben_e> / [] {std::cout << "Neuer State: Geld abheben" << std::endl << std::endl;} = "geld_abheben"_s,
-      "aktion_auswahlen"_s + event<kontostand_e> / [] {std::cout << "Neuer State: Kontostand" << std::endl << std::endl;} = "kontostand"_s,
-      "aktion_auswahlen"_s + event<abbruch> / [] {std::cout << "Neuer State: Automat bereit" << std::endl << std::endl;} = "automat_bereit"_s,
+      "aktion_auswahlen"_s + event<geld_abheben_e> / [] {std::cout << std::endl << "Neuer State: Geld abheben" << std::endl << std::endl;} = "geld_abheben"_s,
+      "aktion_auswahlen"_s + event<kontostand_e> / [] {std::cout << std::endl << "Neuer State: Kontostand" << std::endl << std::endl;} = "kontostand"_s,
+      "aktion_auswahlen"_s + event<abbruch> / [] {std::cout << std::endl << "Neuer State: Automat bereit" << std::endl << std::endl;} = "automat_bereit"_s,
       "aktion_auswahlen"_s + on_entry<_> / [] {
-          std::cout << "Aktion auswählen! 1. Geld abheben oder 2. Kontostand anzeigen" << std::endl;
+          std::cout << "Aktion auswählen! 1. Geld abheben, 2. Kontostand anzeigen oder 3. Abbrechen!" << std::endl;
           std::cin >> aktion;
       },
-      "geld_abheben"_s + event<x_euro> / [] {std::cout << "Neuer State: Karte ausgegeben" << std::endl << std::endl;} = "karte_ausgegeben"_s,
-      "geld_abheben"_s + event<abbruch> / [] {std::cout << "Neuer State: Automat bereit" << std::endl << std::endl;} = "automat_bereit"_s,
+      "geld_abheben"_s + event<x_euro> / [] {std::cout << std::endl << "Neuer State: Karte ausgegeben" << std::endl << std::endl;} = "karte_ausgegeben"_s,
+      "geld_abheben"_s + event<abbruch> / [] {std::cout << std::endl << "Neuer State: Automat bereit" << std::endl << std::endl;} = "automat_bereit"_s,
       "geld_abheben"_s + on_entry<_> / [] {
 
-          std::cout << "Wie viel wollen Sie abheben?" << std::endl;
+          std::cout << "Wie viel wollen Sie abheben? (in Euro)" << std::endl;
+          std::cout << "Abheben: €";
           std::cin >> geldmenge;
+
+          while(geldmenge > 400){
+              std::cout << "Sie können nicht mehr als 400 Euro abheben." << std::endl;
+              std::cout << "Wie viel wollen Sie abheben? (in Euro)" << std::endl;
+              std::cout << "Abheben: €";
+              std::cin >> geldmenge;
+          }
 
           if(karte == "karte1"){
                 if(kontostand1 - geldmenge < 0){
@@ -160,7 +162,7 @@ public:
 
                     std::cout << "Karte wird ausgegeben!" << std::endl;
 
-                    std::cout << "Ausgabe: " << geldmenge << std::endl;
+                    std::cout << "Ausgabe: " << geldmenge << "€" << std::endl;
 
                 }
             }
@@ -175,7 +177,7 @@ public:
 
                     std::cout << "Karte wird ausgegeben!" << std::endl;
 
-                    std::cout << "Ausgabe: " << geldmenge << std::endl;
+                    std::cout << "Ausgabe: " << geldmenge << "€" << std::endl;
 
 
                 }
@@ -192,7 +194,7 @@ public:
 
                     std::cout << "Karte wird ausgegeben!" << std::endl;
 
-                    std::cout << "Ausgabe: " << geldmenge << std::endl;
+                    std::cout << "Ausgabe: " << geldmenge << "€" << std::endl;
 
                 }
             }

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "automaton.h"
 #include <map>
+#include <string>
 
 using namespace std;
 
@@ -16,22 +17,27 @@ int main(){
   using namespace sml;
 
   sm<Automaton> sm{pin_inp, karte_pin};
+  string cancel{};
 
   while(true){
 
     sm.process_event(karte_eingef{});
 
-    sm.process_event(pin{});
+      sm.process_event(pin{});
 
-    if(aktion == 1){
-      sm.process_event(geld_abheben_e{});
-      sm.process_event(x_euro{});
-      sm.process_event(x_euro{});
-    }
-    else{
-      sm.process_event(kontostand_e{});
-      sm.process_event(weitere_aktion{});
-    }
+      if(aktion == 1){
+        sm.process_event(geld_abheben_e{});
+        sm.process_event(x_euro{});
+        sm.process_event(x_euro{});
+      }
+      else if(aktion == 2){
+        sm.process_event(kontostand_e{});
+        sm.process_event(weitere_aktion{});
+     }
+     else{
+       sm.process_event(abbruch{});
+     }
+    
   }
 
 }

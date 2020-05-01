@@ -1,1 +1,1 @@
-automaton nearly works, boost was used properly now
+card will not be usable after 3 wrong tries now
