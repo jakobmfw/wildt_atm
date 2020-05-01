@@ -107,7 +107,6 @@ public:
             }
             else{
                 karte_pin.pin = cards.at(karte);
-                std::cout << karte_pin.pin;
                 check_card=false;
             }
           }
@@ -119,9 +118,7 @@ public:
       "erwarte_pin"_s + on_entry<_> / [] {
           std::cout << "PIN eingeben!" << std::endl;
           std::cin >> pin_;
-          std::cout << pin_ << std::endl;
           pin_inp.value = pin_;
-          std::cout << pin_inp.value << std::endl;
         
       },
       "falscher_pin1"_s + event<pin> [!right_PIN] / [] {std::cout << "Neuer State: Falscher PIN 2" << std::endl << std::endl;} = "falscher_pin2"_s,

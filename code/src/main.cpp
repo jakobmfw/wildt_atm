@@ -30,6 +30,7 @@ int main(){
     }
     else{
       sm.process_event(kontostand_e{});
+      sm.process_event(weitere_aktion{});
     }
   }
 
