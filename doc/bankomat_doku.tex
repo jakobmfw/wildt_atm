@@ -56,14 +56,14 @@ Unterschrift
 
 \section{Einleitung}
 
-Die folgende Dokumentation beschreibt das Projekt "Bankomat [Boost].SML". Es handelt sich um ein Schulprojekt, das durchgeführt wurde um eine Note zu verbessern. \newline
+Die folgende Dokumentation beschreibt das Projekt "Bankomat [Boost].SML", ein Schulprojekt, das durchgeführt wurde, um eine Note zu verbessern. \newline
 Es handelt sich um einen Automaten, der über die Kommandozeile bedient werden kann und auf Basis eines österreichischen Bankomaten implementiert wurde.  
 
 \newpage
 
 \section{[Boost].SML}
 
-[Boost].SML, die "Weiterentwicklung" von Boost.MSM ist eine header-only State Machine Library. Die Bibliothek dient zur Vereinfachung und Strukturierung von komplizierten State Machine-Code in C++ und kann ab dem C-Standard 2014 verwendet werden.
+[Boost].SML, die "Weiterentwicklung" von Boost.MSM ist eine header-only State Machine Library. Die Bibliothek dient zur Vereinfachung und Strukturierung von kompliziertem State Machine-Code in C++ und kann ab dem C-Standard 2014 verwendet werden.
 
 \subsection{Installation}
 
@@ -80,7 +80,7 @@ Die Zustände eines Automaten werden durch States beschrieben. In [Boost].SML m�
 
 \subsubsection{Events}
 
-Events führen Zustandsübergänge herbei und müssen im Gegensatz zu den Zuständen definiert werden, bevor sie im Transition Table verwendet werden können. Sie können als Instanz angelegt werden \begin{lstlisting}[language=c++]
+Events führen Zustandsübergänge herbei und müssen im Gegensatz zu den Zuständen definiert werden, bevor sie im Transition Table verwendet werden können. Sie können als Instanz angelegt werden, \begin{lstlisting}[language=c++]
 auto event = sml::event<my_event>;
 \end{lstlisting} oder als neuer Datentyp implementiert werden.
 \begin{lstlisting}[language=c++]
@@ -91,7 +91,7 @@ struct my_event { ... };
 
 \subsubsection{Guards und Actions}
 
-Guards und Actions sind Objekte, die von der State Machine verarbeitet werden, um zu überprüfen ob ein Zustandsübergang (manchmal gefolgt von einer Aktion) durchgeführt werden soll. Guards returnen immer einen boolschen Wert, während Actions nicht zwingend etwas zurückgeben müssen.
+Guards und Actions sind Objekte, die von der State Machine verarbeitet werden, um zu überprüfen, ob ein Zustandsübergang (manchmal gefolgt von einer Aktion) durchgeführt werden soll. Guards returnen immer einen boolschen Wert, während Actions nicht zwingend etwas zurückgeben müssen.
 \newline\newline
 Beispiele für die Implementierung von Guards wären:
 
@@ -124,7 +124,7 @@ struct action4 {
 
 \subsubsection{State Machine und Transition Table}
 
-Um eine State Machine zu erstellen, braucht man immer einen Transition Table - also eine Zustandsübergangstabelle. Sie beschreibt in welchen Zustand welcher Input welchen Zustandsübergang bewirkt. Der Automat wird als eigene Klasse definiert und eine Instanz davon dann ausgeführt.
+Um eine State Machine zu erstellen, braucht man in [Boost].SML einen Transition Table - also eine Zustandsübergangstabelle. Sie beschreibt in welchem Zustand welcher Input welchen Zustandsübergang bewirkt. Der Automat wird als eigene Klasse definiert und eine Instanz davon angelegt um die Funktionen auszuführen.
 
 \begin{lstlisting}[language=c++]
 namespace sml = boost::sml;
@@ -168,7 +168,7 @@ int main() {
 
 \section{Bankomat}
 
-Im folgenden Abschnitt wird die Funktionsweise sowie die Bedienung des Bankomaten genauer erklärt. 
+Im folgenden Abschnitt wird die Funktionsweise, sowie die Bedienung des Bankomaten genauer erklärt. 
 
 \subsection{UML-Diagramm}
 
@@ -286,15 +286,14 @@ public:
 };
 	
 \end{lstlisting}
-Hier ein Ausschnitt aus dem Transition Table dieses Projektes. Der echte ist noch um einiges länger, dieser Teil soll nur zeigen, wie man sich diese Zustandsübergangstabelle vorstellen kann. Einige dieser Zeilen sind keine Definitionen für Übergänge, sondern beschreiben das Verhalten der State Machine beim Eintritt in verschiedene Zustände. Oft wird eine Eingabe erwartet und ein kurzer Text zur Orientierung ausgegeben.\newline\newline
-
+Hier ein Ausschnitt aus dem Transition Table dieses Projektes. Der Echte ist noch um einiges länger, dieser Teil soll nur zeigen, wie man sich diese Zustandsübergangstabelle vorstellen kann. Einige dieser Zeilen sind keine Definitionen für Übergänge, sondern beschreiben das Verhalten der State Machine beim Eintritt in verschiedene Zustände. Oft wird eine Eingabe erwartet und ein kurzer Text zur Orientierung ausgegeben.\newline\newline
 Hier ein Beispiel für einen Zustandsübergang:
 
 \begin{lstlisting}[language=c++]
 *"automat_bereit"_s + event<karte_eingef> / []{} = "erwarte_pin"_s;
 .
 \end{lstlisting}
-Und hier ein Beispiel für eine on\_entry-Aktion, die durchgeführt wird, sobald der Automat in diesen Zustand kommt:
+Und hier ein Beispiel für eine on\_entry-Aktion, die durchgeführt wird, sobald der Automat in diesen Zustand eintritt:
 \begin{lstlisting}[language=c++]
 "automat_bereit"_s + on_entry<_> / [] {
           std::cout << "Karte bitte!" << std::endl;
@@ -336,11 +335,11 @@ Dieser Guard vergleicht den eingegebenen (pin.value)
 
 \subsubsection{Login}
 
-Um sich in den Bankomat einzuloggen, muss man zuerst seine Karte ''einlesen''. Das bedeutet, einfach entweder ''karte1'', ''karte2'' oder ''karte3'' eingeben, wenn man nach der Karte gefragt wird. Hat man diesen Schritt erfolgreich erledigt, wird man nach dem PIN gefragt. Der PIN für karte1 ist 1234, für karte2 6969 und für karte3 0420.
+Um sich in den Bankomat einzuloggen, muss man zuerst seine Karte ''einlesen''. Das bedeutet, einfach entweder ''karte1'', ''karte2'' oder ''karte3'' einzugeben, wenn man nach der Karte gefragt wird. Hat man diesen Schritt erfolgreich erledigt, wird man nach dem PIN gefragt. Der PIN für karte1 ist 1234, für karte2 6969 und für karte3 0420.
 
 \subsubsection{Aktion auswählen}
 
-In diesem Zustand wird der Benutzer gefragt, was er als nächstes machen will. Seine Möglichkeiten bestehen daraus, sich den Kontostand anzeigen zu lassen, Geld abzuheben oder den Vorgang abzubrechen und sich auszuloggen. Sollte er letzteres wählen, begibt sich der Automat wieder in den Startzustand und wartet au den Input einer Karte.
+In diesem Zustand wird der Benutzer gefragt, was er als nächstes machen will. Seine Möglichkeiten bestehen daraus, sich den Kontostand anzeigen zu lassen, Geld abzuheben oder den Vorgang abzubrechen und sich auszuloggen. Sollte er letzteres wählen, begibt sich der Automat wieder in den Startzustand und wartet auf den Input einer Karte.
 
 \subsubsection{Kontostand anzeigen}
 
@@ -348,7 +347,7 @@ Wählt der Benutzer die 2. Option Kontostand anzeigen aus, wird ihm der aktuelle
 
 \subsubsection{Geld abheben}
 
-Bei der ersten Auswahlmöglichkeit wird der User gefragt, wie viel Geld er abheben will. Hier ist des ihm nicht möglich, mehr als 400 Euro, oder in Minus hinein abzuheben. Sobald die Transaktion abgeschlossen ist und das Geld vom Konto abgezogen wurde, wird der Benutzer automatisch ausgeloggt und der Automat befindet sich wieder im Startzustand.
+Bei der ersten Auswahlmöglichkeit wird der User gefragt, wie viel Geld er abheben will. Hier ist es ihm nicht möglich, mehr als 400 Euro, oder ins Minus hinein abzuheben. Sobald die Transaktion abgeschlossen ist und das Geld vom Konto abgezogen wurde, wird der Benutzer automatisch ausgeloggt und der Automat befindet sich wieder im Startzustand und wartet auf eine Eingabe.
 
 \end{spacing}
 \end{document}
